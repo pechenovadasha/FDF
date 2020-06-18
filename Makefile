@@ -1,71 +1,59 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: croxane <marvin@42.fr>                     +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/09/01 16:26:48 by croxane           #+#    #+#              #
-#    Updated: 2019/09/01 16:26:50 by croxane          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME	= fdf
+
+# src / obj files
+SRC		= main.c \
+		  colour.c \
+		  filling.c \
+		  ft_filling_part_two.c \
+		  get_next_line.c \
+		  iso.c \
+		  key.c \
+		  print.c \
+		  push.c \
+		  volume.c
+
+OBJ		= $(addprefix $(OBJDIR),$(SRC:.c=.o))
+
+# compiler
+CC		= gcc
+CFLAGS	= -Wall -Wextra -Werror -g
+
+# mlx library
+MLX		= ./minilibx_macos/
+MLX_LIB	= $(addprefix $(MLX),mlx.a)
+MLX_INC	= -I ./minilibx_macos
+MLX_LNK	= -L ./minilibx_macos -l mlx -framework OpenGL -framework AppKit
+
+# ft library
+FT		= ./libft/
+FT_LIB	= $(addprefix $(FT),libft.a)
+FT_INC	= -I ./libft
+FT_LNK	= -L ./libft -l ft
+
+# directories
+SRCDIR	= 
+INCDIR	=
+OBJDIR	=
+
+all: $(FT_LIB) $(MLX_LIB) $(NAME)
 
 
-NAME = fdf
-PATH_SRC = ./
-PATH_OBJ = ./
-PATH_INC = ./libft
+$(FT_LIB):
+	make -C $(FT)
 
-CC = gcc
-CFLAGS =
-HEAD = fdf.h
+$(MLX_LIB):
+	make -C $(MLX)
 
-# COLORS
-
-GREEN = \033[0;32m
-RED = \033[0;31m
-RED_B = \033[1;4;31m
-BLUE = \033[1;4;34m
-RESET = \033[0m
-
-SRC =	main.c \
-		get_next_line.c \
-		colour.c \
-		filling.c \
-		volume.c \
-		push.c \
-		ft_filling_part_two.c \
-		print.c \
-		iso.c \
-		key.c
-
-OBJ = $(patsubst %.c,%.o,$(addprefix $(PATH_SRC), $(SRC)))
-
-
-all: $(NAME)
-
-$(NAME): $(OBJ) $(HEAD)
-	@echo "$(BLUE)Libft:$(GREEN) Creating Libft ...$(RESET)"
-	@make -C libft/
-	@echo "$(BLUE)Libft:$(GREEN) Libft.a is done$(RESET)"
-	@$(CC) $(CFLAGS) -I $(PATH_INC) -c $(SRC)
-	@echo "$(BLUE)$(NAME):$(GREEN) $(CC) $(CFLAGS) -I $(PATH_INC) -c $(SRC)$(RESET)"
-	@$(CC) -o $(NAME) $(OBJ) -lm -L libft/ -lft -lmlx -framework OpenGL -framework AppKit
-	@echo "$(BLUE)$(NAME):$(GREEN) $(CC) -o $(NAME) $(OBJ) -lm -L libft/ -lft -lmlx -framework OpenGL -framework AppKit$(RESET)"
-	@echo "$(BLUE)$(NAME):$(GREEN) object files were created$(RESET)"
-	@echo "$(BLUE)$(NAME):$(GREEN) $(NAME) was created$(RESET)"
-
-.PHONY: clean fclean
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) $(MLX_LNK) $(FT_LNK) -lm -o $(NAME)
 
 clean:
-	@echo "$(BLUE)Libft:$(RED) object files were deleted$(RESET)"
-	@/bin/rm -f $(OBJ)
-	@echo "$(BLUE)$(NAME):$(RED) object files were deleted$(RESET)"
+	rm -rf $(OBJDIR)
+	make -C $(FT) clean
+	make -C $(MLX) clean
 
 fclean: clean
-	@echo "$(BLUE)Libft:$(RED) Library libft.a was deleted$(RESET)"
-	@/bin/rm -f $(NAME)
-	@echo "$(BLUE)$(NAME):$(RED) fdf was deleted$(RESET)"
+	rm -rf $(NAME)
+	make -C $(FT) fclean
 
 re: fclean all
-
