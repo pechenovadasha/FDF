@@ -23,8 +23,9 @@
 # include "./libft/libft.h"
 
 # define BUFF_SIZE 4096
-# define WIDTH 1024
-# define HEIGHT 1000
+# define WIDTH 1100
+# define HEIGHT 800
+# define HEIGHT_MENU 200
 
 typedef struct	s_default
 {

@@ -93,6 +93,7 @@ void		ft_print(struct s_struct *data)
 
 	length = data->length;
 	i = data->count;
+
 	while (--i)
 	{
 		if (data->pixel[i].x > data->pixel[i - 1].x)

@@ -43,24 +43,25 @@ int			key_mouse(int key, int x, int y, t_struct *data)
 
 int			key_hook_two(int key, void *param)
 {
+//	printf("%i\n", key);
 	if (key == 126)
 	{
 		clear_image(param);
 		ft_push_down(param);
 	}
-	if (key == 47)
+	if (key == 47) //вращение по ох
 	{
 		clear_image(param);
 		ft_volume_point(param);
 		ft_print(param);
 	}
-	if (key == 0)
+	if (key == 0) //вращение по oy
 	{
 		clear_image(param);
 		ft_volume_point_y(param);
 		ft_print(param);
 	}
-	if (key == 34)
+	if (key == 34) // отображение в изометрии
 	{
 		clear_image(param);
 		ft_iso(param);
@@ -98,7 +99,7 @@ int			key_hook(int key, void *param)
 		clear_image(param);
 		ft_push_up(param);
 	}
-	if (key == 49)
+	if (key == 49) // сброс
 	{
 		clear_image(param);
 		ft_not_iso(param);

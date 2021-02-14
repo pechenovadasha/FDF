@@ -42,6 +42,12 @@ void		ft_volume_point(struct s_struct *data)
 				+ data->volume[i].z * cos(data->alfa);
 		data->pixel[i].x = data->volume[i].x;
 	}
+	i = 0;
+	while(i < data->count){
+		data->pixel[i].y += 5;
+		i++;
+	}
+
 	foo(data);
 }
 
@@ -61,5 +67,11 @@ void		ft_volume_point_y(struct s_struct *data)
 				+ data->volume[i].z * cos(data->alfa);
 		data->pixel[i].y = data->volume[i].y;
 	}
+	i = 0;
+	while(i < data->count){
+		data->pixel[i].x += 10;
+		i++;
+	}
+
 	foo(data);
 }

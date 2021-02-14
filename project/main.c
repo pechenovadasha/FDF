@@ -14,16 +14,16 @@
 
 void			ft_menu(struct s_struct *data)
 {
-	mlx_string_put(data->mlx, data->win, 0, 830, 0xAAAAAA,
+	mlx_string_put(data->mlx, data->win, 0, HEIGHT - HEIGHT_MENU/3, 0xAAAAAA,
 			"Push 'A' to rotate on axis Y");
-	mlx_string_put(data->mlx, data->win, 0, 860, 0xAAAAAA,
+	mlx_string_put(data->mlx, data->win, 0, HEIGHT - HEIGHT_MENU/2, 0xAAAAAA,
 			"Push '>' to rotate on axis X");
-	mlx_string_put(data->mlx, data->win, 0, 890, 0xAAAAAA,
+	mlx_string_put(data->mlx, data->win, 0, HEIGHT - 2*HEIGHT_MENU/3, 0xAAAAAA,
 			"Push arrow keys to move");
-	mlx_string_put(data->mlx, data->win, 0, 800, 0xAAAAAA,
+	mlx_string_put(data->mlx, data->win, 0, HEIGHT - 5*HEIGHT_MENU/6, 0xAAAAAA,
 			"Push space to Reset");
-	mlx_string_put(data->mlx, data->win, 0, 920, 0xAAAAAA,
-			"Push 'i' to change  projection");
+	mlx_string_put(data->mlx, data->win, 0, HEIGHT - HEIGHT_MENU, 0xAAAAAA,
+			"Push 'i' to change  projection (isometric view)");
 }
 
 int				ft_check_map(int fd, struct s_struct *data)
@@ -33,6 +33,7 @@ int				ft_check_map(int fd, struct s_struct *data)
 
 	data->alfa = 0;
 	data->length = 0;
+	data->count = 0;
 	i = 0;
 	while (get_next_line(fd, &str))
 	{
@@ -41,9 +42,9 @@ int				ft_check_map(int fd, struct s_struct *data)
 		while (str[i] != '\0')
 		{
 			if ((str[i] == ' ' || str[i] == '\t') && (i == 0))
-				return (1);
-			if (str[i] >= '0' && str[i] <= '9')
-				data->count++;
+				return (1); // пропуск отступов в начале карты
+			if (str[i] >= '0' && str[i] <= '9' && (str[i + 1] != 'x' && str[i + 1] != 'X'))
+				data->count++; // подсчет колличества цифр в карте
 			i++;
 		}
 		if ((str[i] == '\0' && !str[i - 1]) || !(data->count))
@@ -59,17 +60,17 @@ void			ft_hurt(t_struct *data, t_coor *coor, int fd1)
 	int			i;
 
 	i = 0;
-	ft_coor(coor);
+	ft_coor(coor); //обнуление x, y, z
 	ft_filling(fd1, data, coor);
-	ft_zoom(data);
-	ft_move(data);
+	ft_zoom(data); //нахождение зума, судя по всему неправильно
+	ft_move(data); //cдвиг на зум координат
 	while (i < data->count)
 	{
 		data->volume[i].x = data->pixel[i].x;
 		data->volume[i].y = data->pixel[i].y;
 		data->volume[i].z = data->pixel[i].z;
 		data->def[i].x = data->pixel[i].x;
-		data->def[i].y = data->pixel[i].y;
+		data->def[i].y = data->pixel[i].y; // в data->def хранятся начальные координаты изображения
 		data->def[i].z = data->pixel[i].z;
 		i++;
 	}
@@ -108,10 +109,10 @@ int				main(int argc, char **argv)
 	}
 	fd = open(argv[1], O_RDONLY);
 	fd1 = open(argv[1], O_RDONLY);
-	if ((fd <= 0) || (fd1 <= 0) || ((ft_check_map(fd, &data) == 1))
+	if ((fd <= 0) || (fd1 <= 0) || ((ft_check_map(fd, &data) == 1)) //проверка на цифры в файле
 	|| (data.count <= 0))
 		ft_print_mistake();
-	initialize(&data);
+	initialize(&data); // объявление mlx переменных
 	ft_hurt(&data, &coor, fd1);
 	mlx_hook(data.win, 4, 0, key_mouse, &data);
 	mlx_hook(data.win, 2, 0, key_hook, &data);

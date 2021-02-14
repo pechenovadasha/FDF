@@ -68,6 +68,7 @@ void		ft_iso(t_struct *data)
 	int		previous_x;
 	int		previous_y;
 	int		i;
+	int		center_x, center_y;
 
 	i = -1;
 	foo(data);
@@ -78,8 +79,17 @@ void		ft_iso(t_struct *data)
 		data->pixel[i].x = (previous_x - previous_y) * cos(0.523599);
 		data->pixel[i].y = -data->pixel[i].z + (previous_x + previous_y)
 				* sin(0.523599);
+		//printf("x = %i, y = %i\n", data->pixel[i].x, data->pixel[i].y);
 	}
-	ft_move_2(data);
-	ft_move_y(data);
+
+	i = 0;
+	center_x = 0;
+	while (data->pixel[data->length/2].x + center_x < WIDTH/2)
+		center_x+=10;
+	i = 0;
+	while(i < data->count){
+		data->pixel[i].x += center_x;
+		i++;
+	}
 	foo(data);
 }
