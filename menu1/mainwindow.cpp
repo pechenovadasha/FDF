@@ -19,7 +19,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open file"), "/Users/a19034290/Desktop/FDF/project/test", tr("Image Files (*.fdf)"));
-    QProcess::execute ("/Users/a19034290/Desktop/FDF/project/fdf", (QStringList)fileName);
+        tr("Open file"), "/Users/Mac/Desktop/FDF/project/test", tr("Image Files (*.fdf)"));
+    QProcess::execute ("/Users/Mac/Desktop/FDF/project/fdf", (QStringList)fileName);
 //    exit(0);
+}   
+
+void MainWindow::on_pushButton_2_pressed()
+{
+     QProcess::execute ("/Users/Mac/Desktop/FDF/project/fdf", (QStringList)"/Users/Mac/Desktop/FDF/project/test/42.fdf");
 }

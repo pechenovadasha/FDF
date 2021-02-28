@@ -26,6 +26,8 @@
 # define WIDTH 1100
 # define HEIGHT 800
 # define HEIGHT_MENU 200
+# define WIN 500
+
 
 typedef struct	s_default
 {
@@ -68,6 +70,17 @@ typedef struct	s_struct
 	t_volume	*volume;
 	t_default	*def;
 }				t_struct;
+
+typedef struct s_mlx
+{
+	void		*mlx;
+	void		*win;
+	void		*image;
+	int			*art;
+	int			endian;
+	int			line_s;
+	int			bbp;
+}				t_mlx;
 
 typedef struct	s_print
 {

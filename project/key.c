@@ -43,7 +43,6 @@ int			key_mouse(int key, int x, int y, t_struct *data)
 
 int			key_hook_two(int key, void *param)
 {
-//	printf("%i\n", key);
 	if (key == 126)
 	{
 		clear_image(param);
